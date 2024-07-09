@@ -1,26 +1,58 @@
 import { Image, StyleSheet, Platform, Text, View, TouchableOpacity } from 'react-native';
+import axios from 'axios';
 
 export default function HomeScreen() {
+  const handlePost = async (endpoint : string, dir : string) => {
+    console.log(`${dir} started`);
+    try {
+      const {data} = await axios.post('http://192.168.50.219/' + endpoint, {
+        direction: dir
+      }, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    );
+      console.log('Response:', data);
+      // Handle success
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle error
+    }
+  };
+
   return (
     <View style={styles.container}>
 
       <View style={styles.topHalf}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Up</Text>
+        <TouchableOpacity style={styles.button}
+                          onPressIn={() => handlePost('curtain', 'open')}
+        >
+          <Text style={styles.buttonText}>Open</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Down</Text>
+        <TouchableOpacity style={styles.button}
+                          onPressIn={() => handlePost('curtain', 'close')}
+        >
+          <Text style={styles.buttonText}>Close</Text>
         </TouchableOpacity>
       </View>
       
       <View style={styles.bottomHalf}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Open</Text>
+        <TouchableOpacity style={styles.button}
+                          onPressIn={() => handlePost('rotate', 'clockwise')}
+                          onPressOut={() =>handlePost('rotate', 'stop')}
+        >
+          <Text style={styles.buttonText}>Rotate Left</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Close</Text>
+        <TouchableOpacity style={styles.button}
+                          onPressIn={() => handlePost('rotate', 'counterclockwise')}
+                          onPressOut={() =>handlePost('rotate', 'stop')}
+        >
+          <Text style={styles.buttonText}>Rotate Right</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button}
+                          onPressIn={() => handlePost('rotate', 'stop')}
+        >
           <Text style={styles.buttonText}>Stop</Text>
         </TouchableOpacity>
       </View>
