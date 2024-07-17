@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import { Image, StyleSheet, Platform, Text, View, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 
 export default function HomeScreen() {
+  const [isOpen, setIsOpen] = useState(false);
+
   const handlePost = async (endpoint : string, dir : string) => {
     console.log(`${dir} started`);
     try {
@@ -14,7 +17,9 @@ export default function HomeScreen() {
       }
     );
       console.log('Response:', data);
-      // Handle success
+      if (endpoint === "curtain" && dir !== "stop") {
+        setIsOpen(dir === "open");
+      }
     } catch (error) {
       console.error('Error:', error);
       // Handle error
@@ -26,14 +31,14 @@ export default function HomeScreen() {
 
       <View style={styles.topHalf}>
         <TouchableOpacity style={styles.button}
-                          onPressIn={() => handlePost('curtain', 'open')}
+                          onPressIn={() => isOpen ? handlePost('curtain', 'close') : handlePost('curtain', 'open')}
         >
-          <Text style={styles.buttonText}>Open</Text>
+          <Text style={styles.buttonText}>{isOpen ? 'Close' : 'Open'}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}
-                          onPressIn={() => handlePost('curtain', 'close')}
+                          onPressIn={() => handlePost('stop', 'stop')}
         >
-          <Text style={styles.buttonText}>Close</Text>
+          <Text style={styles.buttonText}>Stop</Text>
         </TouchableOpacity>
       </View>
       
@@ -49,11 +54,6 @@ export default function HomeScreen() {
                           onPressOut={() =>handlePost('rotate', 'stop')}
         >
           <Text style={styles.buttonText}>Rotate Right</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}
-                          onPressIn={() => handlePost('rotate', 'stop')}
-        >
-          <Text style={styles.buttonText}>Stop</Text>
         </TouchableOpacity>
       </View>
 
