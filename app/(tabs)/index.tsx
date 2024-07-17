@@ -1,9 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Image, StyleSheet, Platform, Text, View, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 
 export default function HomeScreen() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // make this null at the start
+
+  useEffect(() => {
+    // Fetch the current status when the component mounts
+    const fetchStatus = async () => {
+      try {
+        const response = await axios.get('http://192.168.50.219/status');
+        setIsOpen(response.data.status === 'open');
+        console.log('isOpen --> ' + response.data.status)
+      } catch (error) {
+        console.error('Error fetching status:', error);
+      }
+    };
+
+    fetchStatus();
+  }, []);
 
   const handlePost = async (endpoint : string, dir : string) => {
     console.log(`${dir} started`);
