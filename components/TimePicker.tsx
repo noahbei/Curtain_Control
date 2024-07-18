@@ -18,12 +18,12 @@ const TimePicker = () => {
   const itemHeight = 50;
   const visibleItems = Math.floor(height / itemHeight / 2) * 2 + 1;
 
-  const handleScroll = (scrollY, setIndex, data) => {
+  const handleScroll = (scrollY : Animated.Value, setIndex : React.Dispatch<React.SetStateAction<number>>, data: string[]) => {
     return Animated.event(
       [{ nativeEvent: { contentOffset: { y: scrollY } } }],
       {
         useNativeDriver: true,
-        listener: (event) => {
+        listener: (event : any) => {
           const offsetY = event.nativeEvent.contentOffset.y;
           const index = Math.round(offsetY / itemHeight) % data.length;
           setIndex((index + data.length) % data.length);
