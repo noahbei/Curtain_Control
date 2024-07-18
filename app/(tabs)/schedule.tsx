@@ -9,7 +9,7 @@ export default function TabTwoScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
+        <ThemedText type="title">Schedule Actions</ThemedText>
       </ThemedView>
       <TimePicker />
       <TimePicker />
