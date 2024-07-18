@@ -21,8 +21,8 @@ export default function TabTwoScreen() {
       <TimePicker />
       <TimePicker />
       <View style={styles.buttonContainer}>
-        <Button title='resetButton' onPress={resetSelection}>helo</Button>
-        <Button title='selectButton' onPress={confirmSelection}>hello</Button>
+        <Button title='Reset Button' onPress={resetSelection}></Button>
+        <Button title='Select Button' onPress={confirmSelection}></Button>
       </View>
     </SafeAreaView>
   );
