@@ -1,11 +1,18 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, Image, Platform, View} from 'react-native';
+import { StyleSheet, Image, Platform, View, Button} from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import  TimePicker from '@/components/TimePicker';
 
 export default function TabTwoScreen() {
+  const resetSelection = () => {
+
+  };
+
+  const confirmSelection = () => {
+    
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ThemedView style={styles.titleContainer}>
@@ -13,6 +20,10 @@ export default function TabTwoScreen() {
       </ThemedView>
       <TimePicker />
       <TimePicker />
+      <View style={styles.buttonContainer}>
+        <Button title='resetButton' onPress={resetSelection}>helo</Button>
+        <Button title='selectButton' onPress={confirmSelection}>hello</Button>
+      </View>
     </SafeAreaView>
   );
 }
@@ -33,5 +44,14 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     gap: 8,
+  },
+  buttonContainer: {
+    // replace flex with better spacing option
+    flex: .2,
+    flexDirection: "row",
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 30,
+    backgroundColor: "yellow",
   },
 });
