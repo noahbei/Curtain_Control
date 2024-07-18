@@ -2,23 +2,27 @@ import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, FlatList, Animated, Dimensions } from 'react-native';
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 
-const hours = Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0'));
+const hours = Array.from({ length: 12 }, (_, i) => i.toString().padStart(2, '0'));
 const minutes = Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, '0'));
+const timeOfDayPeriod = Array("am", "pm");
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 const TimePicker = () => {
   const [selectedHour, setSelectedHour] = useState(0);
   const [selectedMinute, setSelectedMinute] = useState(0);
+  const [selectedTOD, setSelectedTOD] = useState(0);
 
   const hourScrollY = useRef(new Animated.Value(0)).current;
   const minuteScrollY = useRef(new Animated.Value(0)).current;
+  const timeOfDayPeriodScrollY = useRef(new Animated.Value(0)).current;
+
 
   const { height } = Dimensions.get('window');
   const itemHeight = 50;
   const visibleItems = Math.floor(height / itemHeight / 2) * 2 + 1;
 
-  const handleScroll = (scrollY : Animated.Value, setIndex : React.Dispatch<React.SetStateAction<number>>, data: string[]) => {
+  const handleScroll = (scrollY : Animated.Value, setIndex : React.Dispatch<React.SetStateAction<number>> | React.Dispatch<React.SetStateAction<string>>, data: string[]) => {
     return Animated.event(
       [{ nativeEvent: { contentOffset: { y: scrollY } } }],
       {
@@ -63,9 +67,23 @@ const TimePicker = () => {
           onScroll={handleScroll(minuteScrollY, setSelectedMinute, minutes)}
           style={styles.picker}
         />
+        <Text style={styles.separator}></Text>
+        <AnimatedFlatList
+          data={timeOfDayPeriod}
+          keyExtractor={(item) => item}
+          renderItem={({ item }) => <Text style={styles.pickerText}>{item}</Text>}
+          getItemLayout={(data, index) => (
+            { length: itemHeight, offset: itemHeight * index, index }
+          )}
+          showsVerticalScrollIndicator={false}
+          snapToInterval={itemHeight}
+          decelerationRate="fast"
+          onScroll={handleScroll(timeOfDayPeriodScrollY, setSelectedTOD, minutes)}
+          style={styles.picker}
+        />
       </View>
       <Text style={styles.selectedTime}>
-        Selected Time: {`${hours[selectedHour]}:${minutes[selectedMinute]}`}
+        Selected Time: {`${hours[selectedHour]}:${minutes[selectedMinute]} ${timeOfDayPeriod[selectedTOD]}`}
       </Text>
     </View>
   );
