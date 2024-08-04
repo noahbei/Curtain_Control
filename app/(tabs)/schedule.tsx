@@ -6,11 +6,11 @@ import  TimePicker from '@/components/TimePicker';
 
 export default function TabTwoScreen() {
   const resetSelection = () => {
-
+    // on the client side, reset the times displayed
   };
 
   const confirmSelection = () => {
-    
+    // send schedule info to esp32
   };
 
   return (
