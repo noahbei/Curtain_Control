@@ -45,10 +45,15 @@ export default function HomeScreen() {
     <View style={styles.container}>
 
       <View style={styles.topHalf}>
-        <TouchableOpacity style={styles.button}
-                          onPressIn={() => isOpen ? handlePost('curtain', 'close') : handlePost('curtain', 'open')}
+      <TouchableOpacity style={styles.button}
+                          onPressIn={() => handlePost('curtain', 'open')}
         >
-          <Text style={styles.buttonText}>{isOpen ? 'Close' : 'Open'}</Text>
+          <Text style={styles.buttonText}>Open</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button}
+                          onPressIn={() => handlePost('curtain', 'close')}
+        >
+          <Text style={styles.buttonText}>Close</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}
                           onPressIn={() => handlePost('stop', 'stop')}
