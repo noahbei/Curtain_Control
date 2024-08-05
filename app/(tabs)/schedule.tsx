@@ -3,14 +3,31 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import  TimePicker from '@/components/TimePicker';
+import axios from 'axios';
 
 export default function TabTwoScreen() {
   const resetSelection = () => {
     // on the client side, reset the times displayed
   };
 
-  const confirmSelection = () => {
-    // send schedule info to esp32
+  // send schedule info to esp32
+  const confirmSelection = async (endpoint : string, time : object | JSON) => {
+    console.log("selection confimation started");
+    try {
+      const {data} = await axios.post('http://192.168.50.219/' + endpoint, {
+        scheduledTime: time
+      }, {
+        headers: {
+          // MAYBE THIS NEEDS TO BE JSON
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    );
+      console.log('Response:', data);
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle error
+    }
   };
 
   return (
@@ -21,8 +38,8 @@ export default function TabTwoScreen() {
       <TimePicker />
       <TimePicker />
       <View style={styles.buttonContainer}>
-        <Button title='Reset Button' onPress={resetSelection}></Button>
-        <Button title='Select Button' onPress={confirmSelection}></Button>
+        <Button title='Reset Button' onPress={() => {resetSelection("schedule")}}></Button>
+        <Button title='Select Button' onPress={() => {confirmSelection("schedule", selectedTime)}}></Button>
       </View>
     </SafeAreaView>
   );
