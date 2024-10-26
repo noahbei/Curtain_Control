@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, Animated, Dimensions } from 'react-native';
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 
@@ -8,7 +8,7 @@ const timeOfDayPeriod = Array("am", "pm");
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
-const TimePicker = () => {
+const TimePicker = ({ onTimeChange }) => {
   const [selectedHour, setSelectedHour] = useState(0);
   const [selectedMinute, setSelectedMinute] = useState(0);
   const [selectedTOD, setSelectedTOD] = useState(0);
@@ -17,6 +17,11 @@ const TimePicker = () => {
   const minuteScrollY = useRef(new Animated.Value(0)).current;
   const timeOfDayPeriodScrollY = useRef(new Animated.Value(0)).current;
 
+  useEffect(() => {
+    if (onTimeChange) {
+      onTimeChange(hours[selectedHour], minutes[selectedMinute], timeOfDayPeriod[selectedTOD]);
+    }
+  }, [selectedHour, selectedMinute, selectedTOD]);
 
   const { height } = Dimensions.get('window');
   const itemHeight = 50;
