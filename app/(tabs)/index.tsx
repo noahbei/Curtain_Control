@@ -28,7 +28,7 @@ export default function HomeScreen() {
       params.append('direction', dir);
   
       // Send the POST request with urlencoded data
-      const { data } = await axios.post('http://192.168.50.219/' + endpoint, params.toString(), {
+      const { data } = await axios.post('http://192.168.50.47/' + endpoint, params.toString(), {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded', // Set correct Content-Type for urlencoded
         }
