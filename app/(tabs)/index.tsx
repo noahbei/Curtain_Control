@@ -20,18 +20,22 @@ export default function HomeScreen() {
     fetchStatus();
   }, []);
 
-  const handlePost = async (endpoint : string, dir : string) => {
+  const handlePost = async (endpoint: string, dir: string) => {
     console.log(`${dir} started`);
     try {
-      const {data} = await axios.post('http://192.168.50.219/' + endpoint, {
-        direction: dir
-      }, {
+      // URL-encode the data
+      const params = new URLSearchParams();
+      params.append('direction', dir);
+  
+      // Send the POST request with urlencoded data
+      const { data } = await axios.post('http://192.168.50.219/' + endpoint, params.toString(), {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'application/x-www-form-urlencoded', // Set correct Content-Type for urlencoded
         }
-      }
-    );
+      });
+  
       console.log('Response:', data);
+  
       if (endpoint === "curtain" && dir !== "stop") {
         setIsOpen(dir === "open");
       }
